@@ -1,25 +1,3 @@
-print("Selecione uma opção:\n 1 - Cifrar uma mensagem \n 2 - Decifrar uma mensagem \n 3 - Obter senha por ataque de análise de frequência")
-opcao = int(input())
-if opcao == 1:
-  texto = input("Digite a mensagem: ")
-  key = input("Digite a chave: ")
-  xl = Cifrar(texto, key)
-  print(xl)
-elif opcao == 2:
-  criptograma = input("Digite a mensagem cifrada: ")
-  key = input("Digite a chave: ")
-  xl = Decifrador(criptograma,key)
-  print(xl)
-elif opcao == 3:
-  texto_pt = input("Digite a mensagem em português cifrada: ")
-  texto_en  = input("Digite a mensagem em inglês cifrada: ")
-  xli = ataque(texto_pt, texto_en)
-  print(xli[0])
-  print(xli[1])
-else: 
-  print("Opção inválida!")
-
-
 #Função Cifrar
 def Cifrar(texto, key):
   abc = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L",
@@ -50,7 +28,7 @@ def Cifrar(texto, key):
 
   for c in texto:
       c_maiusculo = c.upper()
-  
+
       # Verifica se a letra é do alfabeto sem acento
       if c_maiusculo in abc:
           n = abc.index(c_maiusculo)
@@ -60,11 +38,11 @@ def Cifrar(texto, key):
           letra_cifrada = abc[new_letter].lower() if c.islower() else abc[new_letter]
           criptograma += letra_cifrada
           key_index += 1
-  
+
       # Se for letra com acento, mantém inalterada
       elif c_maiusculo in acentos.keys():
           criptograma += c
-  
+
       # Se for espaço, vírgula, ponto ou outro caractere especial, mantém inalterado
       else:
           criptograma += c
@@ -102,7 +80,7 @@ def Decifrador(criptograma, key):
 
        for c in criptograma:
            c_maiusculo = c.upper()
-       
+
            # Se for letra sem acento
            if c_maiusculo in abc:
                n = abc.index(c_maiusculo)
@@ -111,11 +89,11 @@ def Decifrador(criptograma, key):
                letra_decifrada = abc[msg_letter].lower() if c.islower() else abc[msg_letter]
                mensagem += letra_decifrada
                key_index += 1
-       
+
            # Se for letra com acento, mantém inalterada
            elif c_maiusculo in acentos.keys():
                mensagem += c
-       
+
            # Se for espaço, vírgula, ponto ou outro caractere especial, mantém inalterado
            else:
                mensagem += c
@@ -150,7 +128,7 @@ def ataque(texto_pt, texto_en):
                 trigrams[trigram].append(i)
             else:
                 trigrams[trigram] = [i]
-    
+
         distancias = []
         for positions in trigrams.values():
             if len(positions) > 1:
@@ -162,13 +140,13 @@ def ataque(texto_pt, texto_en):
     def fatores_comuns_top3(distancias):
         if not distancias:
             return [1]
-    
+
         fatores = []
         for d in distancias:
             for i in range(2, 21):  # testamos tamanhos de chave até 20
                 if d % i == 0:
                     fatores.append(i)
-    
+
         contagem = Counter(fatores).most_common(3)
         return [f[0] for f in contagem] if contagem else [1]
 
@@ -185,39 +163,39 @@ def ataque(texto_pt, texto_en):
         for fatia in fatias:
             menor_erro = float('inf')
             melhor_deslocamento = 0
-    
+
             for deslocamento in range(26):
                 texto_deslocado = ''.join(abc[(abc.index(c) - deslocamento) % 26] for c in fatia)
                 freq_texto = calcular_frequencia(texto_deslocado)
-    
+
                 erro = sum(abs(freq_texto.get(l, 0) - freq_idioma.get(l, 0)) for l in abc)
-    
+
                 if erro < menor_erro:
                     menor_erro = erro
                     melhor_deslocamento = deslocamento
-    
+
             chave += abc[melhor_deslocamento]
         return chave
 
     def chave_com_melhor_erro(texto, freq_idioma):
         distancias = encontrar_repeticoes(texto)
         candidatos = fatores_comuns_top3(distancias)
-    
+
         melhor_chave = None
         menor_erro_total = float('inf')
-    
+
         for tamanho_chave in candidatos:
             fatias = fatiar_texto(texto, tamanho_chave)
             chave = descobrir_chave(fatias, freq_idioma)
-    
+
             texto_decodificado = Decifrador(texto, chave) #Decifrador aqui é o mesmo da outra file!
             freq_texto_dec = calcular_frequencia(texto_decodificado)
             erro_total = sum(abs(freq_texto_dec[l] - freq_idioma[l]) for l in abc)
-    
+
             if erro_total < menor_erro_total:
                 menor_erro_total = erro_total
                 melhor_chave = chave
-    
+
         return melhor_chave
 
     # Limpa os textos
@@ -233,3 +211,25 @@ def ataque(texto_pt, texto_en):
     y = f"Chave descoberta para o texto em Inglês: {chave_en}"
     chaves = [x,y]
     return chaves
+
+#Interface
+print("Selecione uma opção:\n 1 - Cifrar uma mensagem \n 2 - Decifrar uma mensagem \n 3 - Obter senha por ataque de análise de frequência")
+opcao = int(input())
+if opcao == 1:
+  texto = input("Digite a mensagem: ")
+  key = input("Digite a chave: ")
+  xl = Cifrar(texto, key)
+  print(xl)
+elif opcao == 2:
+  criptograma = input("Digite a mensagem cifrada: ")
+  key = input("Digite a chave: ")
+  xl = Decifrador(criptograma,key)
+  print(xl)
+elif opcao == 3:
+  texto_pt = input("Digite a mensagem em português cifrada: ")
+  texto_en  = input("Digite a mensagem em inglês cifrada: ")
+  xli = ataque(texto_pt, texto_en)
+  print(xli[0])
+  print(xli[1])
+else: 
+  print("Opção inválida!")
