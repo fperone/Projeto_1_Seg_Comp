@@ -1,105 +1,3 @@
-#Função Cifrar
-def Cifrar(texto, key):
-  abc = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L",
-       "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
-
-  acentos = {'Á': 'A', 'À': 'A', 'Ã': 'A', 'Â': 'A', 'Ä': 'A',
-           'É': 'E', 'È': 'E', 'Ê': 'E', 'Ë': 'E',
-           'Í': 'I', 'Ì': 'I', 'Î': 'I', 'Ï': 'I',
-           'Ó': 'O', 'Ò': 'O', 'Õ': 'O', 'Ô': 'O', 'Ö': 'O',
-           'Ú': 'U', 'Ù': 'U', 'Û': 'U', 'Ü': 'U',
-           'Ç': 'C'}
-
-  def limpar_texto(texto):
-      texto_novo = ''
-      for c in texto.upper():
-          if c in acentos:
-              texto_novo += acentos[c]
-          elif c.isalpha():
-              texto_novo += c
-      return texto_novo
-
-  # Limpa chave (a chave deve ser só letras)
-  key = limpar_texto(key)
-
-  # Processo de cifra
-  criptograma = ""
-  key_index = 0
-
-  for c in texto:
-      c_maiusculo = c.upper()
-
-      # Verifica se a letra é do alfabeto sem acento
-      if c_maiusculo in abc:
-          n = abc.index(c_maiusculo)
-          k = abc.index(key[key_index % len(key)])
-          new_letter = (n + k) % 26
-          # Mantém minúsculo se a letra original era minúscula
-          letra_cifrada = abc[new_letter].lower() if c.islower() else abc[new_letter]
-          criptograma += letra_cifrada
-          key_index += 1
-
-      # Se for letra com acento, mantém inalterada
-      elif c_maiusculo in acentos.keys():
-          criptograma += c
-
-      # Se for espaço, vírgula, ponto ou outro caractere especial, mantém inalterado
-      else:
-          criptograma += c
-
-  return criptograma
-
-#Função de Decifrar
-def Decifrador(criptograma, key):
-       abc = ["A","B","C","D","E","F", "G", "H", "I", "J", "K", "L",
-              "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X","Y","Z"]
-
-       acentos = {'Á': 'A', 'À': 'A', 'Ã': 'A', 'Â': 'A', 'Ä': 'A',
-                  'É': 'E', 'È': 'E', 'Ê': 'E', 'Ë': 'E',
-                  'Í': 'I', 'Ì': 'I', 'Î': 'I', 'Ï': 'I',
-                  'Ó': 'O', 'Ò': 'O', 'Õ': 'O', 'Ô': 'O', 'Ö': 'O',
-                  'Ú': 'U', 'Ù': 'U', 'Û': 'U', 'Ü': 'U',
-                  'Ç': 'C'}
-
-       def limpar_texto(texto):
-           texto_novo = ''
-           for c in texto.upper():
-               if c in acentos:
-                   texto_novo += acentos[c]
-               elif c.isalpha():
-                   texto_novo += c
-           return texto_novo
-
-
-       # Limpa chave (só letras, sem espaços)
-       key = limpar_texto(key)
-
-       # Processo de decifra
-       mensagem = ""
-       key_index = 0
-
-       for c in criptograma:
-           c_maiusculo = c.upper()
-
-           # Se for letra sem acento
-           if c_maiusculo in abc:
-               n = abc.index(c_maiusculo)
-               k = abc.index(key[key_index % len(key)])
-               msg_letter = ((n - k) + 26) % 26
-               letra_decifrada = abc[msg_letter].lower() if c.islower() else abc[msg_letter]
-               mensagem += letra_decifrada
-               key_index += 1
-
-           # Se for letra com acento, mantém inalterada
-           elif c_maiusculo in acentos.keys():
-               mensagem += c
-
-           # Se for espaço, vírgula, ponto ou outro caractere especial, mantém inalterado
-           else:
-               mensagem += c
-
-       return mensagem
-
 #Função de Ataque
 def ataque(texto_pt, texto_en):
     import re
@@ -212,24 +110,54 @@ def ataque(texto_pt, texto_en):
     chaves = [x,y]
     return chaves
 
-#Interface
-print("Selecione uma opção:\n 1 - Cifrar uma mensagem \n 2 - Decifrar uma mensagem \n 3 - Obter senha por ataque de análise de frequência")
-opcao = int(input())
-if opcao == 1:
-  texto = input("Digite a mensagem: ")
-  key = input("Digite a chave: ")
-  xl = Cifrar(texto, key)
-  print(xl)
-elif opcao == 2:
-  criptograma = input("Digite a mensagem cifrada: ")
-  key = input("Digite a chave: ")
-  xl = Decifrador(criptograma,key)
-  print(xl)
-elif opcao == 3:
-  texto_pt = input("Digite a mensagem em português cifrada: ")
-  texto_en  = input("Digite a mensagem em inglês cifrada: ")
-  xli = ataque(texto_pt, texto_en)
-  print(xli[0])
-  print(xli[1])
-else: 
-  print("Opção inválida!")
+#Função de Decifrar
+def Decifrador(criptograma, key):
+       abc = ["A","B","C","D","E","F", "G", "H", "I", "J", "K", "L",
+              "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X","Y","Z"]
+
+       acentos = {'Á': 'A', 'À': 'A', 'Ã': 'A', 'Â': 'A', 'Ä': 'A',
+                  'É': 'E', 'È': 'E', 'Ê': 'E', 'Ë': 'E',
+                  'Í': 'I', 'Ì': 'I', 'Î': 'I', 'Ï': 'I',
+                  'Ó': 'O', 'Ò': 'O', 'Õ': 'O', 'Ô': 'O', 'Ö': 'O',
+                  'Ú': 'U', 'Ù': 'U', 'Û': 'U', 'Ü': 'U',
+                  'Ç': 'C'}
+
+       def limpar_texto(texto):
+           texto_novo = ''
+           for c in texto.upper():
+               if c in acentos:
+                   texto_novo += acentos[c]
+               elif c.isalpha():
+                   texto_novo += c
+           return texto_novo
+
+
+       # Limpa chave (só letras, sem espaços)
+       key = limpar_texto(key)
+
+       # Processo de decifra
+       mensagem = ""
+       key_index = 0
+
+       for c in criptograma:
+           c_maiusculo = c.upper()
+
+           # Se for letra sem acento
+           if c_maiusculo in abc:
+               n = abc.index(c_maiusculo)
+               k = abc.index(key[key_index % len(key)])
+               msg_letter = ((n - k) + 26) % 26
+               letra_decifrada = abc[msg_letter].lower() if c.islower() else abc[msg_letter]
+               mensagem += letra_decifrada
+               key_index += 1
+
+           # Se for letra com acento, mantém inalterada
+           elif c_maiusculo in acentos.keys():
+               mensagem += c
+
+           # Se for espaço, vírgula, ponto ou outro caractere especial, mantém inalterado
+           else:
+               mensagem += c
+
+       return mensagem
+
