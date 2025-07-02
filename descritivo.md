@@ -19,7 +19,7 @@ Esse tipo de ataque é especialmente eficaz contra cifras monoalfabéticas (como
 - Função `limpar_texto`
 A função recebe uma string e retorna apenas as letras maiúsculas de A a Z, substituindo caracteres acentuados por suas versões sem acento. Para cada caractere $c$, se $c \in$ acentos, ele é trocado por `acentos[c]`; se $c$ for uma letra, é mantido.  
 - Função `Decifrador`
-  A função `Decifrador` reverte a cifra de Vigenère aplicada a um texto, utilizando a mesma chave usada na cifragem. A chave é previamente limpa, mantendo apenas letras maiúsculas sem acento. Para cada letra $c_i$ do criptograma presente no alfabeto, calcula-se a letra original com a fórmula: $$ m_i = (c_i - k_i + 26) \bmod 26 $$ em que $c_i$ é o índice da letra cifrada e $k_i$ o da chave. O resultado mantém letras acentuadas e símbolos inalterados, e preserva a capitalização original.
+  A função reverte a cifra de Vigenère aplicada a um texto, utilizando a mesma chave usada na cifragem. A chave é previamente limpa, mantendo apenas letras maiúsculas sem acento. Para cada letra $c_i$ do criptograma presente no alfabeto, calcula-se a letra original com a fórmula: $$ m_i = (c_i - k_i + 26) \bmod 26 $$ em que $c_i$ é o índice da letra cifrada e $k_i$ o da chave. O resultado mantém letras acentuadas e símbolos inalterados, e preserva a capitalização original.
 # Funções-chave de Ataque_de_recuperação_de_senha.py
 - Função `limpar_texto`
   O texto é primeiro convertido para maiúsculas, depois remove todos os caracteres não alfabéticos (exceto letras maiúsculas de A a Z) do texto.
